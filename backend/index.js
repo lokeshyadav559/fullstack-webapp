@@ -66,3 +66,14 @@ app.post('/users/:id', async (req, res, next) => {
         next (err);
     }
 });
+
+app.delete('/users/:id', async (req, res, next) => {
+    try {
+        const user = await prisma.user.delete({
+            where : { id: Number(req.params.id) },
+        });
+        res.status(200).json(user);
+    } catch (err) {
+        next (err);
+    }
+});

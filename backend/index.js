@@ -22,6 +22,24 @@ app.get('/test', (res, req, next) => {
     } catch (err) {
         next(err);
     }
-
 });
 
+app.get('/users', async (res, req, next) => {
+    try {
+        const users = await prisma.user.findMany();
+        res.status(200).json(users);
+    } catch (err) {
+        next (err);
+    }
+});
+
+app.get('/users/:id', async (res, req, next) => {
+    try {
+        const user = await prisma.user.findUnique({
+            where : {id : Number(req.params.id) },
+        });
+        res.status(200).json(user);
+    } catch (err) {
+        next (err);
+    }
+});

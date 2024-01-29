@@ -16,7 +16,7 @@ app.use((req, res, next) => {
     next();
 });
 
-app.get('/test', (res, req, next) => {
+app.get('/test', (req, res, next) => {
     try{
         res.status(200).json({messages : 'Success!'});
     } catch (err) {
@@ -24,7 +24,7 @@ app.get('/test', (res, req, next) => {
     }
 });
 
-app.get('/users', async (res, req, next) => {
+app.get('/users', async (req, res, next) => {
     try {
         const users = await prisma.user.findMany();
         res.status(200).json(users);
@@ -33,7 +33,7 @@ app.get('/users', async (res, req, next) => {
     }
 });
 
-app.get('/users/:id', async (res, req, next) => {
+app.get('/users/:id', async (req, res, next) => {
     try {
         const user = await prisma.user.findUnique({
             where : {id : Number(req.params.id) },
@@ -79,4 +79,4 @@ app.delete('/users/:id', async (req, res, next) => {
 });
 
 const PORT = process.env.PORT || 4000;
-app.listen(PORT, () => console.log('Server is running on port ${PORT}'));
+app.listen(PORT, () => console.log(`Server is running on port ${PORT}`));

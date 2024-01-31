@@ -5,10 +5,10 @@ const { raw } = require('@prisma/client/runtime/library');
 const app = express();
 const prisma = new PrismaClient();
 
-//use json
+// Use express.json() to parse JSON bodies into JS objects
 app.use(express.json());
 
-//cors
+// Enable CORS for all origins, allowing the API to be accessed by any domain
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'GET, PUT, POST, DELETE');
@@ -16,6 +16,7 @@ app.use((req, res, next) => {
     next();
 });
 
+// Test endpoint to check if the server is running properly
 app.get('/test', (req, res, next) => {
     try{
         res.status(200).json({messages : 'Success!'});
@@ -24,6 +25,7 @@ app.get('/test', (req, res, next) => {
     }
 });
 
+// Get a list of users from the database
 app.get('/users', async (req, res, next) => {
     try {
         const users = await prisma.user.findMany();
@@ -33,6 +35,7 @@ app.get('/users', async (req, res, next) => {
     }
 });
 
+// Get a single user by ID
 app.get('/users/:id', async (req, res, next) => {
     try {
         const user = await prisma.user.findUnique({
@@ -44,6 +47,7 @@ app.get('/users/:id', async (req, res, next) => {
     }
 });
 
+// Create a new user with data sent in the request body
 app.post('/users', async (req, res, next) => {
     try {
         const user = await prisma.user.create({
@@ -55,6 +59,7 @@ app.post('/users', async (req, res, next) => {
     }
 });
 
+// Update a user by ID with data sent in the request body
 app.post('/users/:id', async (req, res, next) => {
     try {
         const user = await prisma.user.update({
@@ -67,6 +72,7 @@ app.post('/users/:id', async (req, res, next) => {
     }
 });
 
+// Delete a user by ID
 app.delete('/users/:id', async (req, res, next) => {
     try {
         const user = await prisma.user.delete({
@@ -78,5 +84,6 @@ app.delete('/users/:id', async (req, res, next) => {
     }
 });
 
+// Set the application to listen on a specified port, indicating the server is running
 const PORT = process.env.PORT || 4000;
 app.listen(PORT, () => console.log(`Server is running on port ${PORT}`));

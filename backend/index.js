@@ -84,6 +84,20 @@ app.delete('/users/:id', async (req, res, next) => {
     }
 });
 
+//Put a user by ID
+app.put('/users/:id', async (req, res, next) => {
+    try {
+        const user = await prisma.user.update({
+            where: { id: Number(req.params.id) },
+            data: { ...req.body },
+        });
+        res.status(200).json(user);
+    } catch (err) {
+        next(err);
+    }
+});
+
+
 // Set the application to listen on a specified port, indicating the server is running
 const PORT = process.env.PORT || 4000;
 app.listen(PORT, () => console.log(`Server is running on port ${PORT}`));

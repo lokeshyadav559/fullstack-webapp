@@ -2,30 +2,30 @@ version: '3.9'
 
 services:
   backend:
-    container_name: backend
-    image: backend
-    build: 
-      context: ./backend
-      dockerfile: backend.dockerfile
+    container_name: backend  # Name of the service container
+    image: backend  # The image to use for the backend container
+    build:
+      context: ./backend  # Specifies the build context directory
+      dockerfile: backend.dockerfile  # Dockerfile to use for building the image
     ports:
-      - "4000:4000"
+      - "4000:4000"  # Maps port 4000 of the container to port 4000 on the host
     environment:
-      - DATABASE_URL=postgresql://postgres:postgres@db:5432/postgres?schema=public
+      - DATABASE_URL=postgresql://postgres:postgres@db:5432/postgres?schema=public  # Environment variable for the database URL
     depends_on:
-      - db
+      - db  # Indicates that the backend depends on the db service
 
   db:
-    container_name: db
-    image: postgres:12
-    restart: always
+    container_name: db  # Name of the database container
+    image: postgres:12  # The PostgreSQL image version to use
+    restart: always  # Policy to automatically restart the container
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: postgres
+      POSTGRES_USER: postgres  # Default user for PostgreSQL
+      POSTGRES_PASSWORD: postgres  # Password for the default PostgreSQL user
+      POSTGRES_DB: postgres  # Default database name
     ports:
-      - 5432:5432
+      - 5432:5432  # Maps port 5432 of the container to port 5432 on the host
     volumes:
-      - pgdata:/var/lib/postgresql/data
+      - pgdata:/var/lib/postgresql/data  # Mounts the volume for persistent PostgreSQL data
 
 volumes:
-  pgdata: {}
+  pgdata: {}  # Declares a named volume for PostgreSQL data storage

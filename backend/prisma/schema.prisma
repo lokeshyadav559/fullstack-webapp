@@ -3,11 +3,14 @@
 
 generator client {
   provider = "prisma-client-js"
+  provider = "prisma-client-js" // Specifies the Prisma client provider, in this case JS
 }
 
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+  provider = "postgresql" // Specifies the database provider, PostgreSQL
+  url      = env("DATABASE_URL") // The database URL, dynamically set from the environment variable
 }
 
 //user with id as int autoincrement, name and email as string
@@ -15,4 +18,7 @@ model User {
   id Int @id @default(autoincrement())
   name String
   email String
+  id Int @id @default(autoincrement()) // User ID, automatically increments
+  name String // User name
+  email String // User email
 }

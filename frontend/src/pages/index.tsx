@@ -45,7 +45,7 @@ export default function Home() {
   const handleUpdateUser = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      const response = await axios.pust('${apiUrl}/users/${updateUser.id}', {name: updateUser.name, email: updateUser.email} );
+      const response = await axios.put('${apiUrl}/users/${updateUser.id}', {name: updateUser.name, email: updateUser.email} );
       setUpdateUser({ id: '', name: '', email: ''});
       setUsers(
         users.map((user) => {

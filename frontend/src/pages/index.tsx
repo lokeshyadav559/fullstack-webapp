@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
-import CardComponent from "@/components/CardComponent";
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import CardComponent from '../components/CardComponent';
 
 interface User {
   id: number;
@@ -10,55 +10,53 @@ interface User {
 
 export default function Home() {
   const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000';
-  const [users, setUsers] = useState<User[]>([]);
-  const [newUser, setNewUser] = useState({ name: '', email: ''});
-  const [updateUser, setUpdateUser] = useState ({ id: '', name: '', email: ''});
+  const [users, setUsers] = useState<User[]>([]); 
+  const [newUser, setNewUser] = useState({ name: '', email: '' }); 
+  const [updateUser, setUpdateUser] = useState({ id: '', name: '', email: '' });
 
   // Fetch users
-  useEffect (() => {
-    const fetchData = async() => {
+  useEffect(() => {
+    const fetchData = async () => {
       try {
-        const response = await axios.get('${apiUrl}/users');
+        const response = await axios.get(`${apiUrl}/users`);
         setUsers(response.data.reverse());
       } catch (error) {
         console.error('Error fetching data:', error);
       }
     };
 
-      fetchData();
+    fetchData();
   }, []);
 
   // Create a user
   const createUser = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      const response = await axios.post('${apiUrl}/users', newUser);
+      const response = await axios.post(`${apiUrl}/users`, newUser);
       setUsers([response.data, ...users]);
-      setNewUser({name: '', email: ''});
+      setNewUser({ name: '', email: '' });
+    } catch (error) {
+      console.error('Error creating user:', error);
     }
-      catch (error) {
-        console.error('Error creating a user:', error);
-      }
   };
 
   // Update a user
   const handleUpdateUser = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      const response = await axios.put('${apiUrl}/users/${updateUser.id}', {name: updateUser.name, email: updateUser.email} );
-      setUpdateUser({ id: '', name: '', email: ''});
+      await axios.put(`${apiUrl}/users/${updateUser.id}`, { name: updateUser.name, email: updateUser.email });
+      setUpdateUser({ id: '', name: '', email: '' });
       setUsers(
         users.map((user) => {
           if (user.id === parseInt(updateUser.id)) {
-            return { ...user, name: updateUser.name, email: updateUser.email};
+            return { ...user, name: updateUser.name, email: updateUser.email };
           }
           return user;
-
         })
       );
-      } catch (error) {
-        console.error('Error creating a user:', error);
-      }
+    } catch (error) {
+      console.error('Error updating user:', error);
+    }
   };
 
   // Delete a user
@@ -135,5 +133,4 @@ export default function Home() {
       </div>
     </main>
   );
-
 }
